@@ -12,18 +12,29 @@
       @sliding-end="onSlideEnd"
     >
 
-      <!-- Slide with blank fluid image to maintain slide aspect ratio -->
-      <b-carousel-slide id="itemCarrusel" class="p-1" >
-          <template v-slot:img v-for="(value, name, index) in infos">
-            <div v-if="index%4!=0">
-              <figure class="imagenvideo col-md-3 d-md-inline-block" >
-                  <img v-bind:src="value.url" class="img-fluid">
-              </figure>
-            </div>
+      <!--Slide with blank fluid image to maintain slide aspect ratio -->
+      <b-carousel-slide id="itemCarrusel" class="p-1" v-for="info in infos" :key="info.id">
+          <template v-slot:img >
+            <figure class="imagenvideo col-md-3 d-md-inline-block"  >
+                <img v-bind:src="info.url1" class="img-fluid">
+            </figure>                   
+            <figure class="imagenvideo col-md-3 d-md-inline-block">
+                <img v-bind:src="info.url2" class="img-fluid">
+            </figure>     
+            <figure class="imagenvideo col-md-3 d-md-inline-block">
+                <img v-bind:src="info.url3" class="img-fluid">
+            </figure>                         
+            <figure class="imagenvideo col-md-3 d-md-inline-block">
+                <img v-bind:src="info.url4" class="img-fluid">
+            </figure>        
           </template>
       </b-carousel-slide>
       
     </b-carousel>
+
+
+
+
 
     <div v-if="Math.random() > 0.5">
       Now you see me
@@ -53,9 +64,11 @@
           },
           infos :[
             {
-              id:'',
-              url:'',
-              author:''
+              id:0,
+              url1:'',
+              url2:'',
+              url3:'',
+              url4:'',
             }
           ]
         }
@@ -69,14 +82,22 @@
             .then(function(response, error){
               // handle sucess
               var dataList  = response.data;
+              var cont = 0;
+              var contWrapper = 0;
               var finalResponse = new Array();
               dataList.forEach( function( element, index ){
-                
-                finalResponse.push({
-                  id: element.id,
-                  url: element.download_url,
-                  author: element.author
-                });
+                if(cont%4==0){
+                  finalResponse.push({
+                    id: contWrapper,
+                    url1: dataList[cont].download_url,
+                    url2: dataList[cont+1].download_url,
+                    url3: dataList[cont+2].download_url,
+                    url4: dataList[cont+3].download_url,
+                    author: element.author
+                  });
+                  contWrapper++;
+                }
+                cont++;
 
               });
               resolve(finalResponse);
