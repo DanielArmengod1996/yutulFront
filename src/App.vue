@@ -1,14 +1,12 @@
 <template>
   <div id="app">
-    <NavBar/>
+    <NavBar  v-on:abrirInicioSesion="mostrarInicioSesion" v-on:mostrarVideos="mostrarVideos"/>
     <img alt="Vue logo" src="./assets/logo.png">
-    <Form class="formulario"/>
-    <Slider id="videoSlider"/>
-    <img alt="Vue logo" src="./assets/logo.png">
-
-
-    <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
-
+    <input class="form-control" type="text" placeholder="Search" aria-label="Search" width="20px" />
+    <!--<Slider id="videoSlider" v-if="!setSesion"/>-->
+    <component :is="componentMode"></component>
+        <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
+    <!-- child events -->
   </div>
 
 </template>
@@ -23,12 +21,30 @@ import Form from './components/Form.vue'
 
 export default {
   name: 'app',
+  data() {
+    return {
+      setSesion : false,
+      componentMode: 'Slider'
+    }
+  },
+  methods:{
+    onLogin(idSession){
+      alert(idSession);
+    },
+    mostrarInicioSesion(){
+      this.componentMode = 'Form';
+    },
+    mostrarVideos(){
+      this.componentMode = 'slider';
+    }
+  },
   components: {
     //HelloWorld,
     Slider,
     NavBar,
     Form
   }
+
 }
 </script>
 

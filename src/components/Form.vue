@@ -65,8 +65,9 @@
     },
     methods: {
       onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
+        // se emite al padre el evento de clicked
+        this.$emit('sesionIniciada', this.form.email);
+        evt.preventDefault();
       },
       onReset(evt) {
         evt.preventDefault()

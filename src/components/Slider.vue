@@ -1,49 +1,37 @@
 <template>
-  <div id="carrusel">
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      controls
-      background="#ababab"
-      img-width="2000"
-      img-height="500"
-      style="text-shadow: 1px 1px 2px #333;"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-    >
+  <div>
+    <!--Slide with blank fluid image to maintain slide aspect ratio -->
+      <div class="mt-4" v-for="info in infos" :key="info.id">
+        <b-card-group deck>
+          <b-card img-alt="Card image">
+            <b-img thumbnail fluid :src="info.url1" img-alt="Card image" img-bottom/>
+            <b-card-text>
+              {{info.author1}}
+            </b-card-text>
+          </b-card>
 
-      <!--Slide with blank fluid image to maintain slide aspect ratio -->
-      <b-carousel-slide id="itemCarrusel" class="p-1" v-for="info in infos" :key="info.id">
-          <template v-slot:img >
-            <figure class="imagenvideo col-md-3 d-md-inline-block"  >
-                <img v-bind:src="info.url1" class="img-fluid">
-            </figure>                   
-            <figure class="imagenvideo col-md-3 d-md-inline-block">
-                <img v-bind:src="info.url2" class="img-fluid">
-            </figure>     
-            <figure class="imagenvideo col-md-3 d-md-inline-block">
-                <img v-bind:src="info.url3" class="img-fluid">
-            </figure>                         
-            <figure class="imagenvideo col-md-3 d-md-inline-block">
-                <img v-bind:src="info.url4" class="img-fluid">
-            </figure>        
-          </template>
-      </b-carousel-slide>
-      
-    </b-carousel>
-
+          <b-card img-alt="Card image">
+            <b-img thumbnail fluid :src="info.url2" img-alt="Card image" img-bottom/>
+            <b-card-text>
+              {{info.author2}}
+            </b-card-text>
+          </b-card>
+          <b-card img-alt="Card image">
+            <b-img thumbnail fluid :src="info.url3" img-alt="Card image" img-bottom/>
+            <b-card-text>
+              {{info.author3}}
+            </b-card-text>
+          </b-card>
+          <b-card img-alt="Card image">
+            <b-img thumbnail fluid :src="info.url4" img-alt="Card image" img-bottom/>
+            <b-card-text>
+              {{info.author4}}
+            </b-card-text>
+          </b-card>
+        </b-card-group>
+      </div>
 
 
-
-
-    <div v-if="Math.random() > 0.5">
-      Now you see me
-    </div>
-    <div v-else>
-      Now you don't
-    </div>
-    
-    
     <!--<p class="mt-4">
       Slide #: {{ slide }}<br>
       Sliding: {{ sliding }}
@@ -52,12 +40,12 @@
     
 </template>
 
+
+
 <script>
     export default {
       data() {
         return {
-          slide: 0,
-          sliding: null,
           window:{
             width: 0,
             heigh: 0
@@ -65,10 +53,14 @@
           infos :[
             {
               id:0,
+              author1:'',
               url1:'',
+              author2: '',
               url2:'',
+              author3: '',
               url3:'',
-              url4:'',
+              author4: '',
+              url4:''
             }
           ]
         }
@@ -78,7 +70,7 @@
         axiosGetVideos(){
           const axios = require('axios');
           var promise = new Promise(function(resolve, reject){
-            axios.get('https://picsum.photos/v2/list?page=2&limit=60')
+            axios.get('https://picsum.photos/v2/list?page=2&limit=500')
             .then(function(response, error){
               // handle sucess
               var dataList  = response.data;
@@ -86,14 +78,18 @@
               var contWrapper = 0;
               var finalResponse = new Array();
               dataList.forEach( function( element, index ){
+                console.log(element);
                 if(cont%4==0){
                   finalResponse.push({
                     id: contWrapper,
+                    author1: dataList[cont].author,
                     url1: dataList[cont].download_url,
+                    author2: dataList[cont+1].author,
                     url2: dataList[cont+1].download_url,
+                    author3: dataList[cont+2].author,
                     url3: dataList[cont+2].download_url,
+                    author4: dataList[cont+3].author,
                     url4: dataList[cont+3].download_url,
-                    author: element.author
                   });
                   contWrapper++;
                 }
@@ -118,19 +114,13 @@
           
 
         },
-        // eslint-disable-next-line
-        onSlideStart(slide) {
-            this.sliding = true
-        },//
-        // eslint-disable-next-line
-        onSlideEnd(slide) {
-            this.sliding = false
-        },
         handleResize() {
           this.window.width = window.innerWidth;
           this.window.height = window.innerHeight;
-          if(window.innerWidth < 768){
-            alert('cambio');
+          if(window.innerWidth < 800){
+            this.modo4 = false;
+          }else{
+            this.modo4 = true;
           }
         }
       },
