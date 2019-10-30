@@ -7,7 +7,7 @@
 
       <b-nav-item-dropdown text="Sesion" left>
         <b-dropdown-item v-on:click="iniciarSesion">Join Session</b-dropdown-item> 
-        <b-dropdown-item href="#">Register</b-dropdown-item> 
+        <b-dropdown-item v-on:click="abrirRegistroSesion">Register</b-dropdown-item> 
 
       </b-nav-item-dropdown>
     </b-navbar-nav>
@@ -23,6 +23,9 @@ export default {
   methods:{
     iniciarSesion(){
       this.$emit('abrirInicioSesion');
+    },
+    abrirRegistroSesion(){
+      this.$emit('abrirRegistroSesion');
     },
     mostrarVideos(){
       this.$emit('mostrarVideos');

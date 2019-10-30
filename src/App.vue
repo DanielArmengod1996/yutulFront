@@ -1,22 +1,24 @@
 <template>
   <div id="app">
-    <NavBar  v-on:abrirInicioSesion="mostrarInicioSesion" v-on:mostrarVideos="mostrarVideos"/>
-    <img alt="Vue logo" src="./assets/logo.png">
-    <input class="form-control" type="text" placeholder="Search" aria-label="Search" width="20px" />
-    <!--<Slider id="videoSlider" v-if="!setSesion"/>-->
+    
+    <NavBar  
+      v-on:abrirInicioSesion="mostrarInicioSesion" 
+      v-on:mostrarVideos="mostrarVideos"
+      v-on:abrirRegistroSesion="mostrarRegistroSesion"/>
+    
+    <img alt="Vue logo" class="mt-5 p-3" src="./assets/logo.png" center>
     <component :is="componentMode"></component>
         <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
-    <!-- child events -->
   </div>
 
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
-import Slider from './components/Slider.vue'
+import Slider from './components/ListVideos.vue'
 import NavBar from './components/NavBar.vue'
-import Form from './components/Form.vue'
-
+import FormJoinSession from './components/FormJoinSession.vue'
+import FormRegisterSession from './components/FormRegisterSession.vue'
 
 
 export default {
@@ -32,17 +34,20 @@ export default {
       alert(idSession);
     },
     mostrarInicioSesion(){
-      this.componentMode = 'Form';
+      this.componentMode = 'FormJoinSession';
+    },
+    mostrarRegistroSesion(){
+      this.componentMode = 'FormRegisterSession';
     },
     mostrarVideos(){
       this.componentMode = 'slider';
     }
   },
   components: {
-    //HelloWorld,
     Slider,
     NavBar,
-    Form
+    FormJoinSession,
+    FormRegisterSession
   }
 
 }

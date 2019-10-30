@@ -1,5 +1,6 @@
 <template>
   <div>
+  <h1>REGISTER</h1>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
       <b-form-group
         id="input-group-1"
@@ -13,6 +14,36 @@
           type="email"
           required
           placeholder="Enter email"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-2" label="City:" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.password"
+          required
+          placeholder="City"
+          type="text"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-2" label="Name:" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.password"
+          required
+          placeholder="Enter the name"
+          type="text"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-2" label="LastName:" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.password"
+          required
+          placeholder="Enter the LastName"
+          type="text"
         ></b-form-input>
       </b-form-group>
 

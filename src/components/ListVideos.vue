@@ -1,5 +1,7 @@
 <template>
   <div>
+    <input class="form-control mx-auto w-50 p-3 mt-5" type="text" placeholder="Search" aria-label="Search" width="20px"/>
+
     <!--Slide with blank fluid image to maintain slide aspect ratio -->
       <div class="mt-4" v-for="info in infos" :key="info.id">
         <b-card-group deck>
@@ -32,10 +34,7 @@
       </div>
 
 
-    <!--<p class="mt-4">
-      Slide #: {{ slide }}<br>
-      Sliding: {{ sliding }}
-    </p>-->
+
   </div>
     
 </template>
