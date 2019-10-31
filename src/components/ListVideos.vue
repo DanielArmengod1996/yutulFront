@@ -61,15 +61,17 @@
               author4: '',
               url4:''
             }
-          ]
+          ],
+          limitVideos: 20 
         }
       },
       methods: { 
         // axios rest callout
         axiosGetVideos(){
           const axios = require('axios');
+          var url = `https://picsum.photos/v2/list?page=2&limit=${this.limitVideos}`;
           var promise = new Promise(function(resolve, reject){
-            axios.get('https://picsum.photos/v2/list?page=2&limit=500')
+            axios.get(url)
             .then(function(response, error){
               // handle sucess
               var dataList  = response.data;
@@ -77,7 +79,6 @@
               var contWrapper = 0;
               var finalResponse = new Array();
               dataList.forEach( function( element, index ){
-                console.log(element);
                 if(cont%4==0){
                   finalResponse.push({
                     id: contWrapper,
@@ -108,8 +109,9 @@
             });
             //
           });
-          this.infos = promise.then(response => (this.infos = response));
-          //
+          var listVideos = promise.then(response => (this.infos = response));
+          this.infos.push(listVideos);
+
           
 
         },
@@ -120,6 +122,17 @@
             this.modo4 = false;
           }else{
             this.modo4 = true;
+          }
+        },
+        /*this only triggered when the user stay at top of the window*/ 
+        scroll(){
+          window.onscroll = () =>{
+            let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight >= document.documentElement.offsetHeight+16;
+            if(bottomOfWindow){
+              this.limitVideos += 4;
+              console.log('final');
+              this.axiosGetVideos();
+            }
           }
         }
       },
@@ -132,6 +145,9 @@
       },
       beforeMount(){
         this.axiosGetVideos();
+      },
+      mounted(){
+        this.scroll()
       }
     }
 </script>
