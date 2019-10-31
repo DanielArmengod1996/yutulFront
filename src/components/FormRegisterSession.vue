@@ -20,7 +20,7 @@
       <b-form-group id="input-group-2" label="City:" label-for="input-2">
         <b-form-input
           id="input-2"
-          v-model="form.password"
+          v-model="form.city"
           required
           placeholder="City"
           type="text"
@@ -30,7 +30,7 @@
       <b-form-group id="input-group-2" label="Name:" label-for="input-2">
         <b-form-input
           id="input-2"
-          v-model="form.password"
+          v-model="form.name"
           required
           placeholder="Enter the name"
           type="text"
@@ -40,7 +40,7 @@
       <b-form-group id="input-group-2" label="LastName:" label-for="input-2">
         <b-form-input
           id="input-2"
-          v-model="form.password"
+          v-model="form.lastname"
           required
           placeholder="Enter the LastName"
           type="text"
@@ -87,6 +87,9 @@
         form: {
           email: '',
           password: '',
+          city:'',
+          name:'',
+          lastname:'', 
           genero: null,
           checked: []
         },
@@ -107,6 +110,9 @@
         this.form.password = ''
         this.form.genero = null
         this.form.checked = []
+        this.form.name = ''
+        this.form.lastname = ''
+        this.form.city = ''
         // Trick to reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
