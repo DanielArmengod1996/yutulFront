@@ -111,9 +111,6 @@
           });
           var listVideos = promise.then(response => (this.infos = response));
           this.infos.push(listVideos);
-
-          
-
         },
         handleResize() {
           this.window.width = window.innerWidth;

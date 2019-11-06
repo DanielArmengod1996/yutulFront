@@ -4,7 +4,9 @@
     <NavBar  
       v-on:abrirInicioSesion="mostrarInicioSesion" 
       v-on:mostrarVideos="mostrarVideos"
-      v-on:abrirRegistroSesion="mostrarRegistroSesion"/>
+      v-on:abrirRegistroSesion="mostrarRegistroSesion"
+      v-on:subirVideo="subirVideo"
+      v-on:verVideo="verVideo"/>
     
     <img alt="Vue logo" class="mt-5 p-3" src="./assets/logo.png" center>
     <component :is="componentMode"></component>
@@ -19,6 +21,8 @@ import Slider from './components/ListVideos.vue'
 import NavBar from './components/NavBar.vue'
 import FormJoinSession from './components/FormJoinSession.vue'
 import FormRegisterSession from './components/FormRegisterSession.vue'
+import FormUploadVideo from './components/FormUploadVideo.vue'
+import FormViewVideo from './components/FormViewVideo.vue'
 
 
 export default {
@@ -41,13 +45,21 @@ export default {
     },
     mostrarVideos(){
       this.componentMode = 'slider';
+    },
+    subirVideo(){
+      this.componentMode = 'FormUploadVideo';
+    },
+    verVideo(){
+      this.componentMode = 'FormViewVideo';
     }
   },
   components: {
     Slider,
     NavBar,
     FormJoinSession,
-    FormRegisterSession
+    FormRegisterSession,
+    FormUploadVideo,
+    FormViewVideo
   }
 
 }

@@ -10,6 +10,9 @@
         <b-dropdown-item v-on:click="abrirRegistroSesion">Register</b-dropdown-item> 
 
       </b-nav-item-dropdown>
+      <b-nav-item v-on:click="subirVideo">Subir Video</b-nav-item>
+      <b-nav-item v-on:click="verVideo">Ver Video</b-nav-item>
+
     </b-navbar-nav>
   </b-navbar>
   
@@ -29,6 +32,12 @@ export default {
     },
     mostrarVideos(){
       this.$emit('mostrarVideos');
+    },
+    subirVideo(){
+      this.$emit('subirVideo');
+    },
+    verVideo(){
+      this.$emit('verVideo');
     }
   }
 }
