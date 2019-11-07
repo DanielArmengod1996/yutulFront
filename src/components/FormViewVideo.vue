@@ -1,11 +1,14 @@
 <template>
-  <div class="row">
+    <!--
     <div class="col-md-3 col-md-offset-3">
       <video style="height: 400px; width:600px;" id="videoPlayer" controls muted="muted" autoplay>
         <source src="http://localhost:8050/getvideo" type="video/mp4">
       </video>
     </div>
-  </div>
+    -->
+  <b-embed type="video" aspect="4by3" controls poster="">
+    <source src="http://localhost:8050/getvideo" type="video/mp4">
+  </b-embed>
 </template>
 
 <script>

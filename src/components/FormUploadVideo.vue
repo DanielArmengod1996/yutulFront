@@ -2,43 +2,46 @@
 
   <div id="UploadBox"> 
     <h2>Video Uploader</h2>
-    <form method="post" action="http://localhost:8050/uploadVideo" enctype="multipart/form-data">
+    {{this.uploadPercentage}}
+    <form>
       <input  type="file" id="file" name="file" ref="file" accept="video/*" v-on:change="handleFileUpload()">
-      <button type="submit"> Upload</button>
+      <button type="button" v-on:click="uploadForm"> Upload</button>
     </form>
   </div>
 </template>
 
 <script>
 // controller
+import axios from 'axios';
+
   export default {
     data() {
       return {
-        file:new Blob()
+        file:new Blob(),
+        uploadPercentage:0
       }
     },
     methods: {
       uploadForm() {
-        alert(this.file);
-        const axios = require('axios');
         let formData = new FormData();
-        alert(JSON.stringify(this.file));
         formData.append('file', this.file);
         console.log('>> formData >> ', formData);
+        var config = {
+          onUploadProgress : (progressEvent) => {
+            let progress = Math.round( (progressEvent.loaded * 100) / progressEvent.total )
+            console.log(progress);
+          }
+        };
 
         // You should have a server side REST API 
-        axios.post('http://localhost:8050/uploadVideo',
-          formData, {
-            headers: {
-              'Content-Type': 'video/mp4'
-            }
-          }
-        ).then(function () {
-          console.log('SUCCESS!!');
-        })
-        .catch(function () {
-          console.log('FAILURE!!');
+        axios.post('http://localhost:8020/uploadVideo', formData, {
+            'Content-type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+          })
+        .then(res =>{
+          alert('sucessfully called');
         });
+
       },
       handleFileUpload() {
         
