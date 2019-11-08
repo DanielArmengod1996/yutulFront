@@ -1,5 +1,7 @@
 <template>
   <div>
+    <img alt="Vue logo" class="mt-5 p-3" src="../assets/logo.png" center>
+
     <input class="form-control mx-auto w-50 p-3 mt-5" type="text" placeholder="Search" aria-label="Search" width="20px"/>
 
     <!--Slide with blank fluid image to maintain slide aspect ratio -->

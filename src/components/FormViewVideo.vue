@@ -6,9 +6,24 @@
       </video>
     </div>
     -->
-  <b-embed type="video" aspect="4by3" controls poster="">
-    <source src="http://localhost:8050/getvideo" type="video/mp4">
-  </b-embed>
+    <b-container class="bv-example-row">
+      <b-row>
+        <b-col cols="8">
+          <b-embed type="video" controls allowfullscreen width="500">
+            <source src="http://localhost:8020/getvideo" type="video/mp4">
+          </b-embed>
+        </b-col>
+        <b-col>3 of 3</b-col>
+      </b-row>
+      <b-row class="mt-4">
+        <b-col cols="8">
+          comentarios
+        </b-col>
+        <b-col>
+        </b-col>
+      </b-row>
+    </b-container>
+
 </template>
 
 <script>

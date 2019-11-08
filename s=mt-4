@@ -1,0 +1,46 @@
+[1mdiff --git a/src/components/FormUploadVideo.vue b/src/components/FormUploadVideo.vue[m
+[1mindex cf0afc7..ba5c7a6 100644[m
+[1m--- a/src/components/FormUploadVideo.vue[m
+[1m+++ b/src/components/FormUploadVideo.vue[m
+[36m@@ -1,13 +1,21 @@[m
+ <template>[m
+[31m-[m
+[31m-  <div id="UploadBox"> [m
+[31m-    <h2>Video Uploader</h2>[m
+[31m-    {{this.uploadPercentage}}[m
+[31m-    <form>[m
+[31m-      <input  type="file" id="file" name="file" ref="file" accept="video/*" v-on:change="handleFileUpload()">[m
+[31m-      <button type="button" v-on:click="uploadForm"> Upload</button>[m
+[31m-    </form>[m
+[31m-  </div>[m
+[32m+[m[32m    <b-container class="bv-example-row">[m
+[32m+[m[32m      <b-row>[m
+[32m+[m[32m        <b-col>[m
+[32m+[m[32m          <h2>Video Uploader</h2>[m
+[32m+[m[32m        </b-col>[m
+[32m+[m[32m      </b-row>[m
+[32m+[m[32m      <b-row class="mt-5">[m
+[32m+[m[32m        <b-col>[m
+[32m+[m[32m          <b-button v-if="file" type="button" v-on:click="uploadForm">Upload</b-button>[m
+[32m+[m[32m        </b-col>[m
+[32m+[m[32m      </b-row>[m
+[32m+[m[32m      <b-row>[m
+[32m+[m[32m        <b-col>[m
+[32m+[m[32m          <b-form-file v-model="file" :state="Boolean(file)" placeholder="Choose a file or drop it here..." drop-placeholder="Drop file here..."></b-form-file>[m
+[32m+[m[32m        </b-col>[m
+[32m+[m[32m      </b-row>[m
+[32m+[m[32m    </b-container>[m
+ </template>[m
+ [m
+ <script>[m
+[36m@@ -17,8 +25,8 @@[m [mimport axios from 'axios';[m
+   export default {[m
+     data() {[m
+       return {[m
+[31m-        file:new Blob(),[m
+[31m-        uploadPercentage:0[m
+[32m+[m[32m        file:null,[m
+[32m+[m[32m        uploadPercentage:false[m
+       }[m
+     },[m
+     methods: {[m

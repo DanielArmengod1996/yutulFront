@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="mt-5 p-5">
     
     <NavBar  
       v-on:abrirInicioSesion="mostrarInicioSesion" 
@@ -8,7 +8,6 @@
       v-on:subirVideo="subirVideo"
       v-on:verVideo="verVideo"/>
     
-    <img alt="Vue logo" class="mt-5 p-3" src="./assets/logo.png" center>
     <component :is="componentMode"></component>
         <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
   </div>
