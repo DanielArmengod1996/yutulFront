@@ -1,34 +1,38 @@
 <template>
-    <b-container class="bv-example-row">
-      <b-row>
-        <b-col>
-          <h2>Video Uploader</h2>
-        </b-col>
-      </b-row>
+  <div class="card mx-xl-5">
 
-      <b-row class="mt-5">
-        <b-col>
-        </b-col>
-        <b-col>
-          <!--input para mostrar los videos, solo se muestra cuando el usuario esta por subir el video-->
-          <b-form-file @focus="startUploadingVideo($event)" @change="startUploadingVideo($event)" v-if="!isUploaded && !isUploading" accept="video/*" v-model="file" :state="Boolean(file)" placeholder="Drop the video here ..." drop-placeholder="Drop file here..."></b-form-file>
-          <!-- logging que se mostrará cuando el usuario quiera guardar los cambios y subir video-->
-          <b-button variant="primary" disabled v-if="isUploading">
-            <b-spinner small type="grow"></b-spinner>
-            Uploading...
-          </b-button>
-        </b-col>
-        <b-col>
+    <!-- Card body -->
+    <div class="card-body">
 
-        </b-col>
-        
-      </b-row>
-      <b-row class="mt-3">
-        <b-col>
-          <b-button   type="button" class="btn-lg">Save Changes</b-button>
-        </b-col>
-      </b-row>
-    </b-container>
+        <!-- Default form subscription -->
+        <form>
+            <p class="h4 text-center py-4">Subscribe</p>
+
+              <!--input para mostrar los videos, solo se muestra cuando el usuario esta por subir el video-->
+              <b-form-file class="py-4" v-if="!isUploaded && !isUploading" accept="video/*" v-model="file" :state="Boolean(file)" placeholder="Drop the video here ..." drop-placeholder="Drop file here..."></b-form-file>
+              <!-- logging que se mostrará cuando el usuario quiera guardar los cambios y subir video-->
+              <b-button variant="primary" disabled v-if="isUploading">
+                <b-spinner small type="grow"></b-spinner>
+                Uploading...
+              </b-button>
+            <br>
+
+            <!-- Default input email -->
+            <label for="defaultFormCardEmailEx" class="grey-text font-weight-light">Your email</label>
+            <input type="email" id="defaultFormCardEmailEx" class="form-control">
+            <label for="defaultFormCardEmailEx" class="grey-text font-weight-light">Password</label>
+            <input type="password" id="defaultFormCardEmailEx" class="form-control">
+
+            <div class="text-center py-4 mt-3">
+                <button class="btn btn-outline-purple" type="submit">Send<i class="far fa-paper-plane ml-2"></i></button>
+            </div>
+        </form>
+        <!-- Default form subscription -->
+
+    </div>
+    <!-- Card body -->
+
+  </div>
 </template>
 
 <script>
@@ -72,14 +76,15 @@ import axios from 'axios';
         this.file = this.$refs.file.files[0];
         console.log(JSON.stringify( this.$refs.file.files[0] ) );
         console.log('>>>> 1st element in files array >>>> ', this.file);
-      },
-      startUploadingVideo(event){
-        this.file = event.target.files[0];
-        if(this.file){
+      }
+    
+    },
+    watch:{
+      'file':function(file){
+        if(file){
           this.uploadVideo();
         }
       }
-    
     }
 
   }

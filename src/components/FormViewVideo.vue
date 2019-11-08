@@ -1,12 +1,11 @@
 <template>
-    <!--
-    <div class="col-md-3 col-md-offset-3">
-      <video style="height: 400px; width:600px;" id="videoPlayer" controls muted="muted" autoplay>
-        <source src="http://localhost:8050/getvideo" type="video/mp4">
-      </video>
-    </div>
-    -->
     <b-container class="bv-example-row">
+      <b-row>
+        <b-col cols="8">
+          <h2>Title Video Here</h2>
+        </b-col>
+        <b-col>3 of 3</b-col>
+      </b-row>
       <b-row>
         <b-col cols="8">
           <b-embed type="video" controls allowfullscreen width="500">
