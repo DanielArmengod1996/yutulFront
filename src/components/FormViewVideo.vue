@@ -26,21 +26,19 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
 // controller
   export default {
     data() {
-      return {
-        file:new Blob()
+      return{
+
       }
     },
     methods: {
       uploadForm() {
-        alert(this.file);
-        const axios = require('axios');
         let formData = new FormData();
-        alert(JSON.stringify(this.file));
         formData.append('file', this.file);
-        console.log('>> formData >> ', formData);
 
         // You should have a server side REST API 
         axios.post('http://localhost:8050/uploadVideo',
@@ -50,20 +48,16 @@
             }
           }
         ).then(function () {
-          console.log('SUCCESS!!');
+          //do somethiing when the video is loaded
         })
         .catch(function () {
-          console.log('FAILURE!!');
+          // throw the error
         });
       },
-      handleFileUpload() {
-        
-        this.file = this.$refs.file.files[0];
-        console.log(JSON.stringify( this.$refs.file.files[0] ) );
-        console.log('>>>> 1st element in files array >>>> ', this.file);
-      }
+
     
-    }
+    },
+
 
   }
 </script>

@@ -1,55 +1,48 @@
 <template>
   <div>
   <h1>JOIN SESSION</h1>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-form-group
-        id="input-group-1"
-        label="Email address:"
-        label-for="input-1"
-        description="We'll never share your email with anyone else."
-      >
-        <b-form-input
-          id="input-1"
-          v-model="form.email"
-          type="email"
-          required
-          placeholder="Enter email"
-        ></b-form-input>
-      </b-form-group>
+    <div class="card mx-xl-5">
+    <div class="card-body">
+      <b-form class="m-5" @submit="onSubmit">
+        <b-container class="bv-example-row">
+          <b-row>
+            <b-col>
+              <b-form-input
+                v-model="form.email"
+                type="email"
+                required
+                placeholder="Enter email"
+                class="m-1"
+                :value="this.form.email"
+              ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-input
+                v-model="form.password"
+                required
+                placeholder="Enter password"
+                type="password"
+                class="m-1"
+                :value="this.form.password"
+              ></b-form-input>
+            </b-col>
 
-      <b-form-group id="input-group-2" label="Password:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="form.password"
-          required
-          placeholder="Enter password"
-          type="password"
-        ></b-form-input>
-      </b-form-group>
+          </b-row>
+          <b-button class="m-5 w-25" type="submit" variant="primary">Submit</b-button>
+          <b-button class="m-5 w-25" type="button" variant="danger">Reset password</b-button>
+        </b-container>
 
-      <b-form-group id="input-group-3" label="genero:" label-for="input-3">
-        <b-form-select
-          id="input-3"
-          v-model="form.genero"
-          :options="genero"
-          required
-        ></b-form-select>
-      </b-form-group>
-
-      <b-form-group id="input-group-4">
-        <b-form-checkbox-group v-model="form.checked" id="checkboxes-4">
-          <b-form-checkbox value="me">Check me out</b-form-checkbox>
-          <b-form-checkbox value="that">Check that out</b-form-checkbox>
-        </b-form-checkbox-group>
-      </b-form-group>
-
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
-    </b-form>
+      </b-form>
+    </div>
+  </div>
   </div>
 </template>
 
 <script>
+  import axios from 'axios';
+
 // controller
   export default {
     data() {
@@ -60,15 +53,27 @@
           genero: null,
           checked: []
         },
-        genero: [{ text: 'Select One', value: null }, 'Mujer', 'Hombre', 'Otro'],
         show: true
       }
     },
     methods: {
       onSubmit(evt) {
         // se emite al padre el evento de clicked
-        this.$emit('sesionIniciada', this.form.email);
-        evt.preventDefault();
+        //evt.preventDefault();
+
+        // You should have a server side REST API 
+        axios.post('http://localhost:8020/joinSession', JSON.stringify(this.form), {
+            'Content-type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+        }).then(resp=>{
+          console.log(resp.data.result != 'ko');
+          if(resp.data.result !== 'ko'){
+            // emitimos el id a la pantalla principal
+            this.$emit('sessionJoined', resp.data.result );
+          }
+        }).catch(err=>{
+
+        });
       },
       onReset(evt) {
         evt.preventDefault()

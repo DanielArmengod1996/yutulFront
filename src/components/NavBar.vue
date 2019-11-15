@@ -5,14 +5,12 @@
       <b-nav-item v-on:click="mostrarVideos">Home</b-nav-item>
 
 
-      <b-nav-item-dropdown text="Sesion" left>
-        <b-dropdown-item v-on:click="iniciarSesion">Join Session</b-dropdown-item> 
-        <b-dropdown-item v-on:click="abrirRegistroSesion">Register</b-dropdown-item> 
-
+      <b-nav-item-dropdown  text="Sesion" left>
+        <b-dropdown-item  v-if="userId == null" v-on:click="iniciarSesion">Join Session</b-dropdown-item> 
+        <b-dropdown-item  v-if="userId == null" v-on:click="abrirRegistroSesion">Register</b-dropdown-item> 
+        <b-dropdown-item  v-if="userId != null" v-on:click="cerrarMiSesion">Close Session</b-dropdown-item> 
       </b-nav-item-dropdown>
-      <b-nav-item v-on:click="subirVideo">Subir Video</b-nav-item>
-      <b-nav-item v-on:click="verVideo">Ver Video</b-nav-item>
-
+      <b-nav-item v-if="userId != null" v-on:click="subirVideo">Subir Video</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
   
@@ -21,7 +19,11 @@
 <script>
 
 export default {
-  components: {
+  name: 'NavBar',
+  props: {
+    userId: {
+      type: Number
+    }
   },
   methods:{
     iniciarSesion(){
@@ -38,6 +40,9 @@ export default {
     },
     verVideo(){
       this.$emit('verVideo');
+    },
+    cerrarMiSesion(){
+      this.$emit('cerrarMiSesion');
     }
   }
 }

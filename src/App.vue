@@ -1,14 +1,19 @@
 <template>
   <div id="app" class="mt-5 p-5">
     
-    <NavBar  
+    <NavBar
+      :userId = "idSession"
       v-on:abrirInicioSesion="mostrarInicioSesion" 
       v-on:mostrarVideos="mostrarVideos"
       v-on:abrirRegistroSesion="mostrarRegistroSesion"
       v-on:subirVideo="subirVideo"
-      v-on:verVideo="verVideo"/>
+      v-on:verVideo="verVideo"
+      v-on:cerrarMiSesion="cerrarSesion"/>
     
-    <component :is="componentMode"></component>
+    <component :is="componentMode"
+      v-on:sessionJoined="sessionJoined"
+      v-on:abrirInicioSesion="mostrarInicioSesion">
+    </component>
         <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
   </div>
 
@@ -28,7 +33,7 @@ export default {
   name: 'app',
   data() {
     return {
-      setSesion : false,
+      idSession : null,
       componentMode: 'Slider'
     }
   },
@@ -50,6 +55,14 @@ export default {
     },
     verVideo(){
       this.componentMode = 'FormViewVideo';
+    },
+    sessionJoined(id){
+      this.componentMode = 'slider';
+      this.idSession = id;
+    },
+    cerrarSesion(){
+      this.idSession = null;
+      alert('sesion cerrada');
     }
   },
   components: {
@@ -65,20 +78,8 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 6vmin;
-}
-.formulario{
-  width: none;
-}
-#videoSlider{
-  display: block;
-}
+/*
+*/
 </style>
 
 

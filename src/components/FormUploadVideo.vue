@@ -3,29 +3,68 @@
 
     <!-- Card body -->
     <div class="card-body">
-
         <!-- Default form subscription -->
         <form>
-            <p class="h4 text-center py-4">Subscribe</p>
+            <h2>Upload Video</h2>
 
-              <!--input para mostrar los videos, solo se muestra cuando el usuario esta por subir el video-->
-              <b-form-file class="py-4" v-if="!isUploaded && !isUploading" accept="video/*" v-model="file" :state="Boolean(file)" placeholder="Drop the video here ..." drop-placeholder="Drop file here..."></b-form-file>
-              <!-- logging que se mostrará cuando el usuario quiera guardar los cambios y subir video-->
-              <b-button variant="primary" disabled v-if="isUploading">
-                <b-spinner small type="grow"></b-spinner>
-                Uploading...
-              </b-button>
-            <br>
+              <!--para la subida del video-->
+              <b-container class="bv-example-row">
+                <b-row>
+                  <b-col>
+                    <!--para la subida del video-->
+                    <b-form-file required v-if="!isUploadedVideo && !isUploadingVideo" accept="video/*" v-model="fileVideo" :state="Boolean(fileVideo)" placeholder="Drop video here..." drop-placeholder="Drop file here..."></b-form-file>
+                    <b-button variant="primary" disabled v-if="isUploadingVideo">
+                      <b-spinner small type="grow"></b-spinner>
+                      Uploading video...
+                    </b-button>
+                    <div class="alert alert-success form-custom m-1" v-if="isUploadedVideo" role="alert">
+                      Video uploaded sucessfully!!
+                    </div>
+                  </b-col>
+                  <b-col>
+                    <!--para la subida de la portada-->
+                    <b-form-file required v-if="!isUploadedImage && !isUploadingImage" accept="image/*" v-model="fileImage" :state="Boolean(fileImage)" placeholder="Drop image here..." drop-placeholder="Drop file here..."></b-form-file>
+                    <b-button variant="primary" disabled v-if="isUploadingImage">
+                      <b-spinner small type="grow"></b-spinner>
+                      Uploading image...
+                    </b-button>
+                    <div class="alert alert-success form-custom m-1" v-if="isUploadedImage" role="alert">
+                      Image uploaded sucessfully!!
+                    </div>
+                    <!-- logging que se mostrará cuando el usuario quiera guardar los cambios y subir video-->
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <!-- title -->
+                    <input type="text" required placeholder="title" id="title" class="form-control form-custom m-1"/>
+                  </b-col>
+                  <b-col>
+                    <!-- tags -->
+                    <input type="text" required placeholder="tags : separated with comma ('tag1,tag2,...')" id="tags" class="form-control form-custom m-1"/>
+                  </b-col>
+                </b-row>
+                <b-row rows="5">
+                  <b-col>
+                    <b-form-textarea type="text-area" placeholder="description" id="description" class="form-control m-1" height="15rem"/>
+                  </b-col>
+                  <b-col>
 
-            <!-- Default input email -->
-            <label for="defaultFormCardEmailEx" class="grey-text font-weight-light">Your email</label>
-            <input type="email" id="defaultFormCardEmailEx" class="form-control">
-            <label for="defaultFormCardEmailEx" class="grey-text font-weight-light">Password</label>
-            <input type="password" id="defaultFormCardEmailEx" class="form-control">
+                  </b-col>
+                </b-row>
+                <div class="text-center py-4 mt-3">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block">Send<i class="far fa-paper-plane ml-2"></i></button>
+                </div>
+                <b-row>
+                </b-row>
+                       
+    
+              </b-container>
 
-            <div class="text-center py-4 mt-3">
-                <button class="btn btn-outline-purple" type="submit">Send<i class="far fa-paper-plane ml-2"></i></button>
-            </div>
+
+
+            <!-- Default input title -->
+     
         </form>
         <!-- Default form subscription -->
 
@@ -42,47 +81,75 @@ import axios from 'axios';
   export default {
     data() {
       return {
-        file:null,
-        isUploading:false,
-        isUploaded:false
+        fileVideo:null,
+        fileImage:null,
+        isUploadingVideo:false,
+        isUploadedVideo:false,
+        isUploadedImage: false,
+        isUploadingImage: false
       }
     },
     methods: {
       uploadVideo() {
-        this.isUploading = true;
+        this.isUploadingVideo = true;
         let formData = new FormData();
-        formData.append('file', this.file);
-        console.log('>> formData >> ', formData);
+        formData.append('file', this.fileVideo);
         var config = {
           onUploadProgress : (progressEvent) => {
             let progress = Math.round( (progressEvent.loaded * 100) / progressEvent.total )
-            console.log(progress);
           }
         };
 
         // You should have a server side REST API 
-        axios.post('http://localhost:8020/uploadVideo', formData, {
+        axios.post('http://localhost:8020/uploadMedia', formData, {
             'Content-type': 'multipart/form-data',
             'Access-Control-Allow-Origin': '*'
           })
         .then(res =>{
-          this.isUploading = false;
-          this.isUploaded = true;
+          this.isUploadingVideo = false;
+          this.isUploadedVideo = true;
+        });
+
+      },
+      //FIX: se necesita 
+      uploadImage() {
+        this.isUploadingImage = true;
+        let formData = new FormData();
+        formData.append('file', this.fileImage);
+        var config = {
+          onUploadProgress : (progressEvent) => {
+            let progress = Math.round( (progressEvent.loaded * 100) / progressEvent.total )
+          }
+        };
+
+        // You should have a server side REST API 
+        axios.post('http://localhost:8020/uploadMedia', formData, {
+            'Content-type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+          })
+        .then(res =>{
+          this.isUploadingImage = false;
+          this.isUploadedImage = true;
         });
 
       },
       handleFileUpload() {
         
-        this.file = this.$refs.file.files[0];
-        console.log(JSON.stringify( this.$refs.file.files[0] ) );
-        console.log('>>>> 1st element in files array >>>> ', this.file);
+        this.fileVideo = this.$refs.fileVideo ? this.$refs.fileVideo.files[0] : null;
+        this.fileImage = this.$refs.fileImage ? this.$refs.fileImage.files[0] : null;
+
       }
     
     },
     watch:{
-      'file':function(file){
+      'fileVideo':function(file){
         if(file){
           this.uploadVideo();
+        }
+      },
+      'fileImage':function(file){
+        if(file){
+          this.uploadImage();
         }
       }
     }
