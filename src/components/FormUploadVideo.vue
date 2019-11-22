@@ -37,31 +37,27 @@
                 <b-row>
                   <b-col>
                     <!-- title -->
-                    <input type="text" required placeholder="title" id="title" class="form-control form-custom m-1"/>
+                    <input type="text" :value="this.form.title" required placeholder="title" id="title" class="form-control form-custom m-1"/>
                   </b-col>
                   <b-col>
                     <!-- tags -->
-                    <input type="text" required placeholder="tags : separated with comma ('tag1,tag2,...')" id="tags" class="form-control form-custom m-1"/>
+                    <input type="text" :value="this.form.tags" required placeholder="tags : separated with comma ('tag1,tag2,...')" id="tags" class="form-control form-custom m-1"/>
                   </b-col>
                 </b-row>
                 <b-row rows="5">
                   <b-col>
-                    <b-form-textarea type="text-area" placeholder="description" id="description" class="form-control m-1" height="15rem"/>
+                    <b-form-textarea  :value="this.form.description" type="text-area" placeholder="description" id="description" class="form-control m-1" height="15rem"/>
                   </b-col>
                   <b-col>
 
                   </b-col>
                 </b-row>
-                <div class="text-center py-4 mt-3">
-                  <button type="submit" class="btn btn-primary btn-lg btn-block">Send<i class="far fa-paper-plane ml-2"></i></button>
-                </div>
-                <b-row>
-                </b-row>
-                       
+                  <div class="text-center py-4 mt-3">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Send<i class="far fa-paper-plane ml-2"></i></button>
+
+                  </div>
     
               </b-container>
-
-
 
             <!-- Default input title -->
      
@@ -70,6 +66,24 @@
 
     </div>
     <!-- Card body -->
+    <div id="app">
+    <div v-if="showModal">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper" >
+            <div class="modal-dialog  " role="document">
+              <div class="modal-content w-100">
+                  <CropImage 
+                    :srcImage="this.uploadImageUrl"
+                    v-on:uploadImage="uploadImage"
+                    v-on:closeModal="closeModal"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
+  </div>
 
   </div>
 </template>
@@ -77,8 +91,16 @@
 <script>
 // controller
 import axios from 'axios';
-
+import CropImage from './CropImage.vue';
   export default {
+    components:{
+      CropImage
+    },
+    props: {
+      userId: {
+        type: Number
+      }
+    },
     data() {
       return {
         fileVideo:null,
@@ -86,10 +108,24 @@ import axios from 'axios';
         isUploadingVideo:false,
         isUploadedVideo:false,
         isUploadedImage: false,
-        isUploadingImage: false
+        isUploadingImage: false,
+        form:{
+          url_video: null,
+          url_image: null,
+          title: null,
+          tags: null,
+          description: null,
+          tags: null,
+          id_usuario : this.userId
+        },
+        showModal: false,
+        uploadImageUrl: null
       }
     },
     methods: {
+      closeModal(){
+        this.showModal=false;
+      },
       uploadVideo() {
         this.isUploadingVideo = true;
         let formData = new FormData();
@@ -111,11 +147,13 @@ import axios from 'axios';
         });
 
       },
-      //FIX: se necesita 
-      uploadImage() {
+      uploadImage(image) {
+        console.log(image);
+        this.showModal = false;
         this.isUploadingImage = true;
+
         let formData = new FormData();
-        formData.append('file', this.fileImage);
+        formData.append('file', image);
         var config = {
           onUploadProgress : (progressEvent) => {
             let progress = Math.round( (progressEvent.loaded * 100) / progressEvent.total )
@@ -149,7 +187,9 @@ import axios from 'axios';
       },
       'fileImage':function(file){
         if(file){
-          this.uploadImage();
+          console.log('fichero que se abre con el explorador : ' + JSON.stringify(file));
+          this.uploadImageUrl = URL.createObjectURL(file);
+          this.showModal=true;
         }
       }
     }

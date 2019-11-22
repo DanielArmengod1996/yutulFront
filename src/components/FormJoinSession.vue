@@ -14,6 +14,7 @@
                 placeholder="Enter email"
                 class="m-1"
                 :value="this.form.email"
+                :state="this.validation.userJoinned"
               ></b-form-input>
             </b-col>
           </b-row>
@@ -26,7 +27,13 @@
                 type="password"
                 class="m-1"
                 :value="this.form.password"
+                :state="this.validation.userJoinned"
+                aria-describedby="validationNick"
               ></b-form-input>
+
+              <b-form-invalid-feedback id="validationNick">
+                Error to join session, check the email or the password, there are incorrect.
+              </b-form-invalid-feedback>
             </b-col>
 
           </b-row>
@@ -53,13 +60,15 @@
           genero: null,
           checked: []
         },
+        validation:{
+          userJoinned: null
+        },
         show: true
       }
     },
     methods: {
       onSubmit(evt) {
-        // se emite al padre el evento de clicked
-        //evt.preventDefault();
+        evt.preventDefault();
 
         // You should have a server side REST API 
         axios.post('http://localhost:8020/joinSession', JSON.stringify(this.form), {
@@ -68,8 +77,9 @@
         }).then(resp=>{
           console.log(resp.data.result != 'ko');
           if(resp.data.result !== 'ko'){
-            // emitimos el id a la pantalla principal
             this.$emit('sessionJoined', resp.data.result );
+          }else{
+            this.validation.userJoinned = false;
           }
         }).catch(err=>{
 
@@ -88,6 +98,10 @@
           this.show = true
         })
       }
+    },
+    created(){
+      this.form.email = 'da@gmail.com';
+      this.form.password = 'da';
     }
   }
 </script>
