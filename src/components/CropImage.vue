@@ -45,17 +45,12 @@ export default {
     },
     methods:{
         uploadImage(){
-            var dataURL = this.$refs.clipper.clip();//call component's clip method
-            //console.log('dataURL'+ JSON.stringify( dataURL ));
-            /*
-            var blobBin = atob(dataURL.split(",")[1]);
-            var array = [];
-            for(var i = 0; i < blobBin.length; i++) {
-                array.push(blobBin.charCodeAt(i));
-            }*/
-            var file=new Blob(dataURL, {type: 'image/png'});
-            this.$emit('uploadImage', file);
-            
+            const canvas = this.$refs.clipper.clip();//call component's clip method
+            var image = new Image();
+            image.src = canvas.toDataURL("image/png");
+
+
+            this.$emit('uploadImage', image);
         },
         closeModal(){
             this.$emit('closeModal');

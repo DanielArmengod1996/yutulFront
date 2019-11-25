@@ -6,7 +6,6 @@
         <!-- Default form subscription -->
         <form>
             <h2>Upload Video</h2>
-
               <!--para la subida del video-->
               <b-container class="bv-example-row">
                 <b-row>
@@ -23,7 +22,7 @@
                   </b-col>
                   <b-col>
                     <!--para la subida de la portada-->
-                    <b-form-file required v-if="!isUploadedImage && !isUploadingImage" accept="image/*" v-model="fileImage" :state="Boolean(fileImage)" placeholder="Drop image here..." drop-placeholder="Drop file here..."></b-form-file>
+                    <b-form-file id="inputImageFile" required v-if="!isUploadedImage && !isUploadingImage" accept="image/*" v-model="fileImage" :state="Boolean(fileImage)" placeholder="Drop image here..." drop-placeholder="Drop file here..."></b-form-file>
                     <b-button variant="primary" disabled v-if="isUploadingImage">
                       <b-spinner small type="grow"></b-spinner>
                       Uploading image...
@@ -53,7 +52,8 @@
                   </b-col>
                 </b-row>
                   <div class="text-center py-4 mt-3">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Send<i class="far fa-paper-plane ml-2"></i></button>
+                    <button v-if="!isUploadedImage || !isUploadedVideo" disabled type="submit" class="btn btn-primary btn-lg btn-block">Send<i class="far fa-paper-plane ml-2"></i></button>
+                    <button v-else type="submit" class="btn btn-primary btn-lg btn-block">Send<i class="far fa-paper-plane ml-2"></i></button>
 
                   </div>
     
@@ -91,7 +91,10 @@
 <script>
 // controller
 import axios from 'axios';
+import SHA1 from 'sha1-es';
+
 import CropImage from './CropImage.vue';
+import { encode } from 'punycode';
   export default {
     components:{
       CropImage
@@ -103,6 +106,7 @@ import CropImage from './CropImage.vue';
     },
     data() {
       return {
+        idMedia: null,
         fileVideo:null,
         fileImage:null,
         isUploadingVideo:false,
@@ -129,7 +133,7 @@ import CropImage from './CropImage.vue';
       uploadVideo() {
         this.isUploadingVideo = true;
         let formData = new FormData();
-        formData.append('file', this.fileVideo);
+        formData.append('file', this.fileVideo , this.idMedia + '.mp4');
         var config = {
           onUploadProgress : (progressEvent) => {
             let progress = Math.round( (progressEvent.loaded * 100) / progressEvent.total )
@@ -149,11 +153,18 @@ import CropImage from './CropImage.vue';
       },
       uploadImage(image) {
         console.log(image);
+        const data = image.src;
+        const block = data.split(";");
+        var contentType = block[0].split(":")[1];
+        var realData = block[1].split(",")[1];
+        var blob = this.b64toBlob(realData, contentType);
+
         this.showModal = false;
         this.isUploadingImage = true;
 
         let formData = new FormData();
-        formData.append('file', image);
+        //formData.append('file', blob);
+        formData.append('file', blob, this.idMedia + '.png');
         var config = {
           onUploadProgress : (progressEvent) => {
             let progress = Math.round( (progressEvent.loaded * 100) / progressEvent.total )
@@ -170,6 +181,32 @@ import CropImage from './CropImage.vue';
           this.isUploadedImage = true;
         });
 
+      },
+      b64toBlob(b64Data, contentType, sliceSize) {
+
+        contentType = contentType || '';
+        sliceSize = sliceSize || 512;
+
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
+
+
+
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+        }
+
+        var blob = new Blob(byteArrays, {type: contentType});
+        return blob;
       },
       handleFileUpload() {
         
@@ -192,6 +229,11 @@ import CropImage from './CropImage.vue';
           this.showModal=true;
         }
       }
+    },
+    created(){
+      var current_date = btoa( (new Date()).valueOf().toString() + (Math.random() * 99999).toString() );
+      
+      this.idMedia  = current_date; 
     }
 
   }
