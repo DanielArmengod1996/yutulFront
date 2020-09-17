@@ -2,7 +2,7 @@
   <div id="app" class="mt-5 p-5">
     
     <NavBar
-      :userId = "idSession"
+      :idSession = "idSession"
       v-on:abrirInicioSesion="mostrarInicioSesion" 
       v-on:mostrarVideos="mostrarVideos"
       v-on:abrirRegistroSesion="mostrarRegistroSesion"

@@ -153,7 +153,7 @@ import axios from 'axios';
             'Content-type': 'multipart/form-data',
             'Access-Control-Allow-Origin': '*'
         }).then(resp=>{
-          //console.log(resp.data.result != 'ko');
+          ////console.log(resp.data.result != 'ko');
           //if(resp.data.result !== 'ko'){
             // emitimos el id a la pantalla principal
             //this.$emit('registeredSession', resp.data.result );
@@ -166,9 +166,7 @@ import axios from 'axios';
             this.validation.errorEmail = !resp.data.errorFields.includes("email");
             this.validation.errorNick  = !resp.data.errorFields.includes("nick");
           }
-        }).catch(err=>{
-
-        });
+        }).catch();
       }
     },
 

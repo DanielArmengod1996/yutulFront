@@ -75,12 +75,16 @@
           var promise = new Promise(function(resolve, reject){
             axios.get(url)
             .then(function(response, error){
+              if(error){
+                //console.log(error);
+              }
               // handle sucess
               var dataList  = response.data;
-              var cont = 0;
+              
               var contWrapper = 0;
               var finalResponse = new Array();
-              dataList.forEach( function( element, index ){
+              dataList.forEach( function( /*element,*/ index ){
+                var cont = index+1;
                 if(cont%4==0){
                   finalResponse.push({
                     id: contWrapper,
@@ -106,8 +110,7 @@
               reject(error);
               
             })
-            .finally(function(data){
-              
+            .finally(/*function(data)*/()=>{
             });
             //
           });
@@ -129,7 +132,7 @@
             let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight >= document.documentElement.offsetHeight+16;
             if(bottomOfWindow){
               this.limitVideos += 4;
-              console.log('final');
+              //console.log('final');
               this.axiosGetVideos();
             }
           }
