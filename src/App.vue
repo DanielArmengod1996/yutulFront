@@ -2,7 +2,6 @@
   <div id="app" class="mt-5 p-5">
     
     <NavBar
-      :idSession = "idSession"
       v-on:abrirInicioSesion="mostrarInicioSesion" 
       v-on:mostrarVideos="mostrarVideos"
       v-on:abrirRegistroSesion="mostrarRegistroSesion"
@@ -33,7 +32,7 @@ export default {
   name: 'app',
   data() {
     return {
-      idSession : null,
+      idSession: null,
       componentMode: 'Slider'
     }
   },
@@ -58,11 +57,11 @@ export default {
     },
     sessionJoined(id){
       this.componentMode = 'slider';
-      this.idSession = id;
+      localStorage.setItem('yutulSessionId' , id);
     },
     cerrarSesion(){
+      localStorage.setItem('yutulSessionId' , null);
       this.idSession = null;
-      alert('sesion cerrada');
     }
   },
   components: {
@@ -72,8 +71,11 @@ export default {
     FormRegisterSession,
     FormUploadVideo,
     FormViewVideo
+  },
+  created(){
+    alert('Bienvenido user : ' +  localStorage.getItem('yutulSessionId') );
+    this.idSession = localStorage.getItem('yutulSessionId');
   }
-
 }
 </script>
 

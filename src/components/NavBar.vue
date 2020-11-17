@@ -22,9 +22,7 @@
 export default {
   name: 'NavBar',
   props: {
-    userId: {
-      type: Number
-    }
+    userId: localStorage.getItem('yutulSessionId')
   },
   methods:{
     iniciarSesion(){
@@ -45,6 +43,10 @@ export default {
     cerrarMiSesion(){
       this.$emit('cerrarMiSesion');
     }
+  },
+  created(){
+    alert('Bienvenido user : ' +  localStorage.getItem('yutulSessionId') );
+    this.userId = localStorage.getItem('yutulSessionId');
   }
 }
 </script>
