@@ -137,6 +137,7 @@
 import axios from "axios";
 
 import CropImage from "./CropImage.vue";
+
 export default {
     components: {
         CropImage

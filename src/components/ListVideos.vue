@@ -1,41 +1,19 @@
 <template>
-  <div>
-    <img alt="Vue logo" class="mt-5 p-3" src="../assets/logo.png" center>
+  <div class="box" @scroll="handleScroll">
 
-    <input class="form-control mx-auto w-50 p-3 mt-5" type="text" placeholder="Search" aria-label="Search" width="20px"/>
-
-    <!--Slide with blank fluid image to maintain slide aspect ratio -->
-      <div class="mt-4" v-for="info in infos" :key="info.id">
-        <b-card-group deck>
-          <b-card img-alt="Card image">
-            <b-img thumbnail fluid :src="info.url1" img-alt="Card image" img-bottom/>
-            <b-card-text>
-              {{info.author1}}
-            </b-card-text>
-          </b-card>
-
-          <b-card img-alt="Card image">
-            <b-img thumbnail fluid :src="info.url2" img-alt="Card image" img-bottom/>
-            <b-card-text>
-              {{info.author2}}
-            </b-card-text>
-          </b-card>
-          <b-card img-alt="Card image">
-            <b-img thumbnail fluid :src="info.url3" img-alt="Card image" img-bottom/>
-            <b-card-text>
-              {{info.author3}}
-            </b-card-text>
-          </b-card>
-          <b-card img-alt="Card image">
-            <b-img thumbnail fluid :src="info.url4" img-alt="Card image" img-bottom/>
-            <b-card-text>
-              {{info.author4}}
-            </b-card-text>
-          </b-card>
-        </b-card-group>
-      </div>
-
-
+    <div class="row">
+        <div v-for="info in infos" :key="info.id" class="col-md-3 col-6 my-1">
+            <div class="card h-100">
+                <img :src="info.url" class="card-img-top">
+                <div class="card-body">
+                    <div class="card-title">{{ info.author }}</div>
+                    <div>
+                        <span class="badge badge-pill badge-info">${{ info.author }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
   </div>
     
@@ -54,20 +32,25 @@
           infos :[
             {
               id:0,
-              author1:'',
-              url1:'',
-              author2: '',
-              url2:'',
-              author3: '',
-              url3:'',
-              author4: '',
-              url4:''
+              author:'',
+              url:''
             }
           ],
-          limitVideos: 20 
+          limitVideos: 50 
         }
       },
       methods: { 
+        /*this triggered when the user top the window*/ 
+        handleScroll: function(evt){
+            alert('ASDASDAJKSHDAKJSH');
+            if((evt.srcElement.offsetHeight + evt.srcElement.scrollTop) >= evt.srcElement.scrollHeight-100){
+                this.limitVideos += 4;
+                //console.log('final');
+                alert('TOP');
+                this.axiosGetVideos();
+                
+            }
+        },
         // axios rest callout
         axiosGetVideos(){
           const axios = require('axios');
@@ -81,25 +64,14 @@
               // handle sucess
               var dataList  = response.data;
               
-              var contWrapper = 0;
               var finalResponse = new Array();
-              dataList.forEach( function( /*element,*/ index ){
-                var cont = index+1;
-                if(cont%4==0){
-                  finalResponse.push({
-                    id: contWrapper,
-                    author1: dataList[cont].author,
-                    url1: dataList[cont].download_url,
-                    author2: dataList[cont+1].author,
-                    url2: dataList[cont+1].download_url,
-                    author3: dataList[cont+2].author,
-                    url3: dataList[cont+2].download_url,
-                    author4: dataList[cont+3].author,
-                    url4: dataList[cont+3].download_url,
-                  });
-                  contWrapper++;
-                }
-                cont++;
+              dataList.forEach( function( index, i ){
+                
+                finalResponse.push({
+                id: i,
+                author: index.author,
+                url: index.download_url
+                });
 
               });
               resolve(finalResponse);
@@ -120,29 +92,20 @@
         handleResize() {
           this.window.width = window.innerWidth;
           this.window.height = window.innerHeight;
-          if(window.innerWidth < 800){
+          if(window.innerWidth < 1000){
             this.modo4 = false;
           }else{
             this.modo4 = true;
           }
         },
-        /*this only triggered when the user stay at top of the window*/ 
-        scroll(){
-          window.onscroll = () =>{
-            let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight >= document.documentElement.offsetHeight+16;
-            if(bottomOfWindow){
-              this.limitVideos += 4;
-              //console.log('final');
-              this.axiosGetVideos();
-            }
-          }
-        }
       },
       created(){
+        //window.addEventListener('scroll', this.onScroll);
         window.addEventListener('resize', this.handleResize);
         this.handleResize;
       },
       destroyed(){
+        //window.removeEventListener('scroll', this.onScroll);
         window.removeEventListener('resize', this.handleResize)
       },
       beforeMount(){
@@ -150,7 +113,7 @@
       },
       mounted(){
         this.scroll()
-      }
+      },
     }
 </script>
 
