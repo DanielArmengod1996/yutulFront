@@ -7,7 +7,7 @@
 
       <b-nav-item-dropdown  text="Sesion" left>
         <b-dropdown-item  v-if="sessionId == null" v-on:click="iniciarSesion">Join Session</b-dropdown-item> 
-        <b-dropdown-item  v-on:click="verVideo">Ver video</b-dropdown-item> 
+        <b-dropdown-item  v-on:click="verVideo">Mis videos</b-dropdown-item> 
         <b-dropdown-item  v-if="sessionId == null" v-on:click="abrirRegistroSesion">Register</b-dropdown-item> 
         <b-dropdown-item  v-if="sessionId != null" v-on:click="cerrarMiSesion">Close Session</b-dropdown-item> 
       </b-nav-item-dropdown>

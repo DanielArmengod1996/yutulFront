@@ -141,8 +141,9 @@ export default {
     components: {
         CropImage
     },
-    
-    props : ['idSession'],
+    props: {
+        userId: String
+    },
     data() {
         return {
             idMedia: null,
@@ -153,12 +154,12 @@ export default {
             isUploadedImage: false,
             isUploadingImage: false,
             form: {
+                id_usuario:( this.userId == 'null' ) ? null : this.userId,
                 url_video: null,
                 url_image: null,
                 title: null,
                 tags: null,
                 description: null,
-                userId : this.props[0]
             },
             showModal: false,
             uploadImageUrl: null
@@ -255,13 +256,13 @@ export default {
     },
     watch: {
         fileVideo: function(file) {
-            alert(this.userId);
+            alert(this.form.id_usuario);
             if (file) {
                 this.uploadVideo();
             }
         },
         fileImage: function(file) {
-            alert(this.userId);
+            alert(this.form.id_usuario);
             if (file) {
                 this.uploadImageUrl = URL.createObjectURL(file);
                 this.showModal = true;
@@ -273,7 +274,7 @@ export default {
             new Date().valueOf().toString() + (Math.random() * 99999).toString()
         );
 
-        this.idMedia = this.userId + current_date;
+        this.idMedia = this.form.id_usuario + current_date;
     }
 };
 </script>

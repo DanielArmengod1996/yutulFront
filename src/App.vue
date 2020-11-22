@@ -12,7 +12,8 @@
     
     <component :is="componentMode"
       v-on:sessionJoined="sessionJoined"
-      v-on:abrirInicioSesion="mostrarInicioSesion">
+      v-on:abrirInicioSesion="mostrarInicioSesion"
+      :userId="usuarioId">
     </component>
   </div>
 
