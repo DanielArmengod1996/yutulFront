@@ -76,7 +76,7 @@
         }).then(resp=>{
 
             if(resp.data.result !== 'ko'){
-                alert( resp.data.result );
+                localStorage.setItem('yutulSessionId' , resp.data.result);
                 this.$emit('sessionJoined', resp.data.result );
             }else{
                 this.validation.userJoinned = false;

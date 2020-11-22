@@ -6,12 +6,12 @@
 
 
       <b-nav-item-dropdown  text="Sesion" left>
-        <b-dropdown-item  v-if="userId == null" v-on:click="iniciarSesion">Join Session</b-dropdown-item> 
+        <b-dropdown-item  v-if="sessionId == null" v-on:click="iniciarSesion">Join Session</b-dropdown-item> 
         <b-dropdown-item  v-on:click="verVideo">Ver video</b-dropdown-item> 
-        <b-dropdown-item  v-if="userId == null" v-on:click="abrirRegistroSesion">Register</b-dropdown-item> 
-        <b-dropdown-item  v-if="userId != null" v-on:click="cerrarMiSesion">Close Session</b-dropdown-item> 
+        <b-dropdown-item  v-if="sessionId == null" v-on:click="abrirRegistroSesion">Register</b-dropdown-item> 
+        <b-dropdown-item  v-if="sessionId != null" v-on:click="cerrarMiSesion">Close Session</b-dropdown-item> 
       </b-nav-item-dropdown>
-      <b-nav-item v-if="userId != null" v-on:click="subirVideo">Subir Video</b-nav-item>
+      <b-nav-item v-if="sessionId != null" v-on:click="subirVideo">Subir Video</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
   
@@ -20,33 +20,34 @@
 <script>
 
 export default {
-  name: 'NavBar',
-  props: {
-    userId: localStorage.getItem('yutulSessionId')
-  },
-  methods:{
-    iniciarSesion(){
-      this.$emit('abrirInicioSesion');
+    data() {
+        return {
+            sessionId : ( this.userId == 'null' ) ? null : this.userId
+        }
     },
-    abrirRegistroSesion(){
-      this.$emit('abrirRegistroSesion');
+    name: 'NavBar',
+    props: {
+        userId: String
     },
-    mostrarVideos(){
-      this.$emit('mostrarVideos');
-    },
-    subirVideo(){
-      this.$emit('subirVideo');
-    },
-    verVideo(){
-      this.$emit('verVideo');
-    },
-    cerrarMiSesion(){
-      this.$emit('cerrarMiSesion');
+    methods:{
+        iniciarSesion(){
+        this.$emit('abrirInicioSesion');
+        },
+        abrirRegistroSesion(){
+        this.$emit('abrirRegistroSesion');
+        },
+        mostrarVideos(){
+        this.$emit('mostrarVideos');
+        },
+        subirVideo(){
+        this.$emit('subirVideo');
+        },
+        verVideo(){
+        this.$emit('verVideo');
+        },
+        cerrarMiSesion(){
+        this.$emit('cerrarMiSesion');
+        }
     }
-  },
-  created(){
-    alert('Bienvenido user : ' +  localStorage.getItem('yutulSessionId') );
-    this.userId = localStorage.getItem('yutulSessionId');
-  }
 }
 </script>
