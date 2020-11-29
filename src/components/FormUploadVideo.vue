@@ -177,7 +177,7 @@ export default {
             formData.append("file", this.fileVideo, fileName);
             this.form.url_video = fileName;
 
-        // You should have a server side REST API
+            // You should have a server side REST API
             axios.post("http://localhost:8020/uploadMedia", formData, {
                 "Content-type": "multipart/form-data",
                 "Access-Control-Allow-Origin": "*"

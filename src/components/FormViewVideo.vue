@@ -41,7 +41,7 @@
         formData.append('file', this.file);
 
         // You should have a server side REST API 
-        axios.post('http://localhost:8050/uploadVideo',
+        axios.post('http://localhost:8020/uploadVideo',
           formData, {
             headers: {
               'Content-Type': 'multipart/form-data'

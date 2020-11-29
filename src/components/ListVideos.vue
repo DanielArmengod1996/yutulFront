@@ -2,7 +2,7 @@
   <div class="box" @scroll="handleScroll">
 
     <div class="row">
-        <div v-for="info in infos" :key="info.id" class="col-md-3 col-6 my-1">
+        <div v-for="info in infos" :key="info.id" class="col-md-3 col-6 my-3">
             <div class="card h-100">
                 <img :src="info.url" class="card-img-top">
                 <div class="card-body">
@@ -54,7 +54,7 @@
         // axios rest callout
         axiosGetVideos(){
           const axios = require('axios');
-          var url = `https://picsum.photos/v2/list?page=2&limit=${this.limitVideos}`;
+          var url = `http://localhost:8020/getRandomImages`;
           var promise = new Promise(function(resolve, reject){
             axios.get(url)
             .then(function(response, error){
@@ -65,12 +65,12 @@
               var dataList  = response.data;
               
               var finalResponse = new Array();
-              dataList.forEach( function( index, i ){
+              dataList.result.forEach( function( index, i ){
                 
                 finalResponse.push({
                 id: i,
-                author: index.author,
-                url: index.download_url
+                author: index.nombre,
+                url:"http://localhost:8020/getImage?name=" + index.localizacionImage
                 });
 
               });
