@@ -1,6 +1,5 @@
 <template>
-  <div id="app" class="mt-5 p-5">
-    
+    <div id="app" class="mt-5 p-5">
     <NavBar
       v-on:abrirInicioSesion="mostrarInicioSesion" 
       v-on:mostrarVideos="mostrarVideos"
@@ -13,7 +12,9 @@
     <component :is="componentMode"
       v-on:sessionJoined="sessionJoined"
       v-on:abrirInicioSesion="mostrarInicioSesion"
-      :userId="usuarioId">
+      v-on:verVideo="verVideo"
+      :userId="usuarioId"
+      v-bind:videoData="localizacionVideo">
     </component>
   </div>
 
@@ -41,7 +42,8 @@ export default {
     data() {
         return {
             componentMode: 'Slider',
-            usuarioId : localStorage.getItem('yutulSessionId')
+            usuarioId : localStorage.getItem('yutulSessionId'),
+            localizacionVideo : ''
         }
     },
     methods:{
@@ -57,7 +59,8 @@ export default {
         subirVideo(){
             this.componentMode = 'FormUploadVideo';
         },
-        verVideo(){
+        verVideo(urlVideo){
+            this.localizacionVideo = urlVideo;
             this.componentMode = 'FormViewVideo';
         },
         sessionJoined(){

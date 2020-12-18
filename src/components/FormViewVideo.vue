@@ -2,17 +2,22 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col cols="8">
-          <h2>Title Video Here</h2>
+          <h2>{{videoData.tituloVideo}}</h2>
         </b-col>
-        <b-col>3 of 3</b-col>
+        <b-col>videos relacionados</b-col>
       </b-row>
       <b-row>
         <b-col cols="8">
           <b-embed type="video" controls allowfullscreen width="500">
-            <source src="http://localhost:8020/getvideo" type="video/mp4">
+            <source v-bind:src="'http://localhost:8020/getvideo?urlVideo=' + videoData.localizacionVideo"  type="video/mp4">
           </b-embed>
         </b-col>
-        <b-col>3 of 3</b-col>
+        
+      </b-row>
+            
+      <b-row class="mt-4" >
+        <b-col cols="8"  >{{videoData.descripcionVideo}}</b-col>
+
       </b-row>
       <b-row class="mt-4">
         <b-col cols="8">
@@ -30,9 +35,12 @@
 
 // controller
   export default {
+    props: {
+        videoData: Object,
+    },
     data() {
       return{
-
+          urlVideo :''
       }
     },
     methods: {
@@ -54,6 +62,9 @@
           // throw the error
         });
       },
+      beforeMount(){
+          this.urlVideo = 'http://localhost:8020/getvideo?urlVideo=' + this.videoData.localizacionVideo;  
+      }
 
     
     },

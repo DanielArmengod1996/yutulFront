@@ -3,15 +3,15 @@
 
     <div class="row">
         <div v-for="info in infos" :key="info.id" class="col-md-3 col-6 my-3">
-            <div class="card h-100">
+            <button class="card h-100" v-on:click="selectVideo(info)">
                 <img :src="info.url" class="card-img-top">
                 <div class="card-body">
-                    <div class="card-title">{{ info.author }}</div>
+                    <div class="card-title">{{ info.tituloVideo }}</div>
                     <div>
-                        <span class="badge badge-pill badge-info">${{ info.author }}</span>
+                        <span class="badge badge-pill badge-info">${{ info.tituloVideo }}</span>
                     </div>
                 </div>
-            </div>
+            </button>
         </div>
     </div>
 
@@ -32,17 +32,23 @@
           infos :[
             {
               id:0,
-              author:'',
+              tituloVideo:'',
+              localizacionVideo:'',
+              descripcionVideo:'',
               url:''
             }
           ],
           limitVideos: 50 
         }
       },
+      name: 'ListVideos',
       methods: { 
+        /** this method is triggered when the video is choosed */
+        selectVideo: function( videoData ){
+            this.$emit('verVideo', videoData);
+        },
         /*this triggered when the user top the window*/ 
         handleScroll: function(evt){
-            alert('ASDASDAJKSHDAKJSH');
             if((evt.srcElement.offsetHeight + evt.srcElement.scrollTop) >= evt.srcElement.scrollHeight-100){
                 this.limitVideos += 4;
                 //console.log('final');
@@ -69,8 +75,10 @@
                 
                 finalResponse.push({
                 id: i,
-                author: index.nombre,
-                url:"http://localhost:8020/getImage?name=" + index.localizacionImage
+                tituloVideo: index.nombre,
+                url:"http://localhost:8020/getImage?name=" + index.localizacionImage,
+                localizacionVideo : index.localizacionVideo,
+                descripcionVideo : index.description
                 });
 
               });
